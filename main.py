@@ -20,9 +20,10 @@ def main():
         # Types: NAME, NUMBER, OP, STRING, COMMENT (include)
         for t in tokens:
             t_name: str = tokenize.tok_name[t.type]
+            token: str = None
 
             # new lines or blank lines
-            if tokenize.tok_name[t.type] in ['NL', 'NEWLINE']:
+            if t_name in ['NL', 'NEWLINE']:
                 continue
 
             # includes
@@ -30,30 +31,24 @@ def main():
                 # captura nome do arquivo da biblioteca
                 t.string = re.search(r'<(.*)>', t.string).group(1)
                 token = 'Reserved Word, "{}" (include), {} ({})'.format(t.string, t.type, t.name)
-                print(token)
-                output.append(token)
 
             # reserved words / key words
             elif t.type == tokenize.NAME and t.string in key_words:
                 token = 'Reserved Word, "{}", {} ({})'.format(t.string, t.type, t_name)
-                print(token)
-                output.append(token)
 
             # comments (//)
             elif t.type == tokenize.OP and re.match(r'^\/\/', t.string):
                 token = 'Single-line Comment, "{}", {} ({})'.format(t.string, t.type, t_name)
-                print(token)
-                output.append(token)
 
             # identifiers
             elif t.type == tokenize.NAME:
                 token = 'Identifier, "{}", {} ({})'.format(t.string, t.type, t_name)
-                print(token)
-                output.append(token)
 
             # operators
             elif t.type == tokenize.OP and re.match(r'[=\-\+\*\/<>%]{1,2}', t.string):
                 token = 'Operator, "{}", {} ({})'.format(t.string, t.type, t_name)
+
+            if token is not None:
                 print(token)
                 output.append(token)
 
