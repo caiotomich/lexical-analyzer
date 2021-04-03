@@ -1,0 +1,4 @@
+.mypy_cache
+venv
+list_of_tokens.txt
+__pycache__
